@@ -25,8 +25,8 @@ var Utils = {
         try {
             var workbook = new Workbook();
             var fileObj = {
-                it: {path:[], name:[]},
-                ro:{path:[], name:[]}
+                de: {path:[], name:[]},
+                pl:{path:[], name:[]}
             };
             for (let i = 0; i < files.length; i++) {
                 var fileName = files[i].split('\\').pop();
@@ -34,19 +34,19 @@ var Utils = {
                 fileObj[language]['path'].push(files[i]);
                 fileObj[language]['name'].push(fileName);
             }
-            console.log(fileObj.it.name.length, fileObj.ro.name.length);
-            for (let i = 0; i < fileObj.it.name.length; i++) {
-                var currentFileName = fileObj.it.name[i];
+            console.log(fileObj.de.name.length, fileObj.pl.name.length);
+            for (let i = 0; i < fileObj.de.name.length; i++) {
+                var currentFileName = fileObj.de.name[i];
                 global[currentFileName] = workbook.add(currentFileName);
 
                 var defaultFileContent = await new Promise((resolve, reject) => {
-                    fs.readFile(fileObj.it.path[i], 'utf8', function(err, data) {
+                    fs.readFile(fileObj.de.path[i], 'utf8', function(err, data) {
                         rowsArray = data.split('\n');
                         resolve(rowsArray);
                     });
                 });
                 var compareContent = await new Promise((resolve, reject)=>{
-                    fs.readFile(fileObj.ro.path[i], 'utf8', function(err, data) {
+                    fs.readFile(fileObj.pl.path[i], 'utf8', function(err, data) {
                         rowsArray = data.split('\n');
                         resolve(rowsArray);
                     });
@@ -180,7 +180,7 @@ var Utils = {
                     
                     if (r == rowArray.length - 1 && propContent) {
                         try {
-                            fs.writeFile(`${destinationFile}\\${worksheetName}`.replace('fr_FR', 'sv_SE (2)'), propContent, function(err) {
+                            fs.writeFile(`${destinationFile}\\${worksheetName}.properties`, propContent, function(err) {
                                 if(err) {
                                     return console.log(err);
                                 }
